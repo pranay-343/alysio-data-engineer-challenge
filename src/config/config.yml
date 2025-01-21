@@ -1,0 +1,9 @@
+file_paths:
+  companies_data: 'data/salesforce/companies.csv'
+  contacts_data: 'data/salesforce/contacts.json'
+  opportunities_data: 'data/salesforce/opportunities.csv'
+  activities_data: 'data/salesforce/activities.json'
+log_paths:
+  log_file : "log/data_cleaning.log"
+database_path:
+  database_name: 'salesforce_data.db'

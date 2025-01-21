@@ -1,0 +1,5 @@
+2025-01-21 15:10:49,905 - INFO - Starting the ETL pipeline.
+2025-01-21 15:10:49,935 - INFO - Cleaning datasets.
+2025-01-21 15:10:49,975 - INFO - Saving cleaned data to SQLite.
+2025-01-21 15:10:50,054 - INFO - Successfully saved all data to SQLite database
+2025-01-21 15:10:50,054 - INFO - Data cleaning pipeline completed successfully.

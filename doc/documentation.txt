@@ -1,0 +1,155 @@
+Salesforce Data Cleaning and ETL Process Documentation
+
+Overview
+
+This Python script implements an ETL (Extract, Transform, Load) process for Salesforce data, handling four main entities: Companies, Contacts, Opportunities, and Activities. The script includes data loading, cleaning, validation, and storage in a SQLite database.
+
+
+How to Get Started
+
+1 Install Required Packages
+  pip install -r requirements.txt
+
+2 Create Database Table and Schema
+  python .\schema\init.py
+
+3 Execute Data Cleaning and Store in SQL Database
+  python .\src\pipeline_executer.py
+
+
+
+Process Flow
+1. Load raw data from files
+2. Clean and validate each dataset
+3. Maintain referential integrity
+4. Store cleaned data in SQLite database	
+
+Data Model
+
+ Prerequisites
+- Python 3.x
+- Required Python packages:
+  - pandas
+  - numpy
+  - sqlite3
+  - json	
+  - logging
+  - re
+  - datetime
+  - yaml
+
+Data Sources
+The script expects input data in the following locations:
+- `data/salesforce/companies.csv`
+- `data/salesforce/contacts.json`
+- `data/salesforce/opportunities.csv`
+- `data/salesforce/activities.json`
+
+ Logging
+- Log files are stored in: `log/data_cleaning.log`
+- Logging format: timestamp followed by message
+- Logs both information and error messages
+
+Core Functions
+
+Extract and Return
+```python
+extract_and_retrun(file_path)
+```
+-Extracts data from CSV and JSON files
+-Returns a pandas DataFrame containing the file contents
+-Implements error handling with logging
+-Supports two file formats:
+CSV: Direct reading using pandas
+JSON: Handles both list and object structures
+	Key features:
+Path validation
+File type detection
+Error logging
+DataFrame conversion
+Exception handling
+
+Companies Data Cleaning
+```python
+clean_companies(companies_df)
+```
+Operations:
+- Standardizes company names and industry names (Title case)
+- Removes leading/trailing whitespace
+- Removes records with missing IDs or names
+- Validates annual revenue (must be non-negative)
+
+Contacts Data Cleaning
+```python
+clean_contacts(contacts_df, opportunities_df, activities_df)
+```
+Operations:
+- Normalizes email addresses (lowercase, trimmed)
+- Removes duplicate email entries
+- Standardizes phone numbers to format: +1 (555) 123-4567
+- Maintains referential integrity with opportunities and activities
+- Removes records with missing IDs or emails
+- Standardized job titles
+
+ Opportunities Data Cleaning
+```python
+clean_opportunities(opportunities_df)
+```
+Operations:
+- Validates amounts (must be non-negative)
+- Converts and validates date formats
+- Ensures close_date is after created_date
+- Removes records with invalid dates
+
+Activities Data Cleaning
+```python
+clean_activities(activities_df)
+```
+Operations:
+- Validates timestamp formats
+- Removes records with invalid timestamps
+
+Data Validation Rules
+
+Companies
+- Required fields: id, name
+- Annual revenue must be ≥ 0
+- Industry and company names are standardized to Title case
+
+Contacts
+- Required fields: id, email
+- Email addresses must be unique
+- Phone numbers are formatted as: +1 (555) 123-4567
+- Titles are standardized to Title case
+
+Opportunities
+- Amount must be ≥ 0
+- close_date must be after created_date
+- Both dates must be valid datetime formats
+
+
+Activities
+- Timestamp must be a valid datetime format
+
+Database Storage
+- Database file: `salesforce_data.db`
+- Tables:
+  - Companies
+  - Contacts
+  - Opportunities
+  - Activities
+- Storage method: Replace existing tables
+
+
+Error Handling
+- Comprehensive error catching at each processing stage
+- Detailed error logging with timestamps
+- Raises exceptions after logging for process termination
+
+Usage Example
+```python
+companies, contacts, opportunities, activities = execution()
+```
+
+
+
